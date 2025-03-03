@@ -45,7 +45,7 @@ export default function AuthPage() {
         <div className="w-full max-w-sm">
           <div className="flex items-center gap-2 mb-8">
             <Store className="h-6 w-6" />
-            <h1 className="text-2xl font-bold">BizAcquire</h1>
+            <h1 className="text-2xl font-bold">Acquitor</h1>
           </div>
           
           <Tabs defaultValue="login">

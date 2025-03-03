@@ -53,7 +53,7 @@ export default function NavBar() {
     return (
       <nav className="border-b px-4 py-3 flex justify-between items-center bg-background">
         <Link href="/">
-          <h1 className="font-semibold text-lg">BizAcquire</h1>
+          <h1 className="font-semibold text-lg">Acquitor</h1>
         </Link>
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
@@ -83,7 +83,7 @@ export default function NavBar() {
     <nav className="border-b px-6 py-3 flex justify-between items-center bg-background">
       <div className="flex items-center gap-6">
         <Link href="/">
-          <h1 className="font-semibold text-lg">BizAcquire</h1>
+          <h1 className="font-semibold text-lg">Acquitor</h1>
         </Link>
         <NavLinks />
       </div>
