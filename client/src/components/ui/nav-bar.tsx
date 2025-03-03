@@ -27,22 +27,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"; // Added Avatar imports
 
 
-export default function NavBar() {
-  const { user, logoutMutation } = useAuth();
-  const [location] = useLocation();
-  const isMobile = useIsMobile();
-  const [open, setOpen] = useState(false);
-
-  if (!user) return null;
-
-  const navItems = [
-    { href: "/courses", label: "Learn", icon: BookOpen },
-    { href: "/businesses", label: "Search", icon: Store },
-    { href: "/experts", label: "Connect", icon: Users },
-    { href: "/dashboard", label: "Dashboard" }, // Added Dashboard link
-  ];
-
-  const NavLinks = () => (
+const NavLinks = () => ( // Moved NavLinks definition above its usage
     <>
       {navItems.map((item) => {
         const Icon = item.icon;
@@ -60,6 +45,23 @@ export default function NavBar() {
       })}
     </>
   );
+
+
+export default function NavBar() {
+  const { user, logoutMutation } = useAuth();
+  const [location] = useLocation();
+  const isMobile = useIsMobile();
+  const [open, setOpen] = useState(false);
+
+  if (!user) return null;
+
+  const navItems = [
+    { href: "/courses", label: "Learn", icon: BookOpen },
+    { href: "/businesses", label: "Search", icon: Store },
+    { href: "/experts", label: "Connect", icon: Users },
+    { href: "/dashboard", label: "Dashboard" }, // Added Dashboard link
+  ];
+
 
   if (isMobile) {
     return (
