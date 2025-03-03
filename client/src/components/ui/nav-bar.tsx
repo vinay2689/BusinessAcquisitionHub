@@ -1,3 +1,4 @@
+
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,7 @@ import {
   Sheet,
   SheetContent,
   SheetTrigger,
-  SheetFooter, // Added SheetFooter import
+  SheetFooter,
 } from "@/components/ui/sheet";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -23,29 +24,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu"; // Added DropdownMenu imports
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"; // Added Avatar imports
-
-
-const NavLinks = () => ( // Moved NavLinks definition above its usage
-    <>
-      {navItems.map((item) => {
-        const Icon = item.icon;
-        return (
-          <Link key={item.href} href={item.href}>
-            <Button
-              variant={location === item.href ? "default" : "ghost"}
-              className="gap-2"
-            >
-              <Icon className="h-4 w-4" />
-              {item.label}
-            </Button>
-          </Link>
-        );
-      })}
-    </>
-  );
-
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export default function NavBar() {
   const { user, logoutMutation } = useAuth();
@@ -59,9 +39,27 @@ export default function NavBar() {
     { href: "/courses", label: "Learn", icon: BookOpen },
     { href: "/businesses", label: "Search", icon: Store },
     { href: "/experts", label: "Connect", icon: Users },
-    { href: "/dashboard", label: "Dashboard" }, // Added Dashboard link
+    { href: "/dashboard", label: "Dashboard", icon: Store }, // Added Dashboard link with an icon
   ];
 
+  const NavLinks = () => (
+    <>
+      {navItems.map((item) => {
+        const Icon = item.icon;
+        return (
+          <Link key={item.href} href={item.href}>
+            <Button
+              variant={location === item.href ? "default" : "ghost"}
+              className="gap-2"
+            >
+              {Icon && <Icon className="h-4 w-4" />}
+              {item.label}
+            </Button>
+          </Link>
+        );
+      })}
+    </>
+  );
 
   if (isMobile) {
     return (
@@ -75,27 +73,48 @@ export default function NavBar() {
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent>
-            <div className="flex flex-col gap-2 mt-8">
-              <NavLinks />
-              <div className="flex flex-col space-y-2 mb-4"> {/* Profile options in mobile view */}
-                <Button variant="ghost" className="justify-start" asChild>
-                  <Link href="/profile">Profile</Link>
-                </Button>
-                <Button variant="ghost" className="justify-start" asChild>
-                  <Link href="/settings">Settings</Link>
-                </Button>
-                <Button variant="ghost" className="justify-start" asChild>
-                  <Link href="/privacy">Privacy</Link>
-                </Button>
-              </div>
-              <Button
-                variant="outline"
-                className="w-full"
+          <SheetContent className="py-8">
+            <div className="flex flex-col gap-4">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link key={item.href} href={item.href} onClick={() => setOpen(false)}>
+                    <Button
+                      variant={location === item.href ? "default" : "ghost"}
+                      className="w-full justify-start gap-2"
+                    >
+                      {Icon && <Icon className="h-4 w-4" />}
+                      {item.label}
+                    </Button>
+                  </Link>
+                );
+              })}
+            </div>
+            <SheetFooter className="mt-auto">
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start gap-2" 
                 onClick={() => logoutMutation.mutate()}
               >
+                <LogOut className="h-4 w-4" />
                 Log out
               </Button>
+            </SheetFooter>
+            
+            {/* Profile options in mobile view */}
+            <div className="border-t mt-4 pt-4">
+              <h3 className="text-sm font-medium mb-3">My Account</h3>
+              <div className="flex flex-col gap-2">
+                <Link href="/profile" onClick={() => setOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start">Profile</Button>
+                </Link>
+                <Link href="/settings" onClick={() => setOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start">Settings</Button>
+                </Link>
+                <Link href="/privacy" onClick={() => setOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start">Privacy</Button>
+                </Link>
+              </div>
             </div>
           </SheetContent>
         </Sheet>
@@ -111,11 +130,11 @@ export default function NavBar() {
         </Link>
         <NavLinks />
       </div>
-      <DropdownMenu> {/* Profile options in desktop view */}
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="rounded-full">
             <Avatar>
-              <AvatarImage src={user?.avatarUrl} /> {/* Assuming avatarUrl is available */}
+              <AvatarImage src={user?.avatarUrl} />
               <AvatarFallback>
                 {(user?.name || "User")[0].toUpperCase()}
               </AvatarFallback>
